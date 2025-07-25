@@ -12,7 +12,7 @@ export default function Grid() {
     Array.from({ length: GRID_SIZE }, () =>
       Array.from({ length: GRID_SIZE }, () => 'free')
     )
-  );
+  );   //initialize grid 20x20 grid with initially all cells set to free
 
   const [startPos, setStartPos] = useState<[number, number] | null>(null);
   const [goalPos, setGoalPos] = useState<[number, number] | null>(null);
@@ -21,7 +21,8 @@ export default function Grid() {
 
   const handleClick = (row: number, col: number, event: React.MouseEvent) => {
     setGrid((prevGrid) => {
-      const newGrid = prevGrid.map((r) => [...r]);
+      //create a new grid to not mutate previous state directly
+      const newGrid = prevGrid.map((r) => [...r]); //clone each row of the existing grid
 
       if (event.shiftKey) {
         // Set start
@@ -80,7 +81,8 @@ export default function Grid() {
             onClick={(e) => handleClick(rowIndex, colIndex, e)}
           />
         ))
-      )}
+      )
+      }
     </div>
     <div className='justify-center items-center py-4'>
       <button onClick={handleSolve}>Solve</button>
