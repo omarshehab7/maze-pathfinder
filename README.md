@@ -1,33 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Maze Pathfinder
+A modern maze pathfinding visualization tool built with Next.js, TypeScript, and WebSockets.
+Visualizes algorithms like A* in real-time, showing visited nodes and the shortest path between a start and goal cell.
 
-## Getting Started
+Features
+  - Interactive 20x20 grid with:
+  
+  - Start (Green), Goal (Red), Walls (Black), Free cells (White)
+  
+  - Path visualization (Blue) and visited nodes (Yellow)
+  
+  - A* algorithm for pathfinding
+  
+  - Real-time WebSocket updates
+  
+  - Modern Poppins font UI with TailwindCSS
+  
+  - Supports resetting and solving the maze
 
-First, run the development server:
+
+Controls
+  - Shift + Left Click → Set Start Cell (Green)
+  
+  - Ctrl / Cmd + Left Click → Set Goal Cell (Red)
+  
+  - Left Click → Toggle Wall / Free Cell
+  
+  - Solve button → Runs the A* pathfinding algorithm
+  
+  - Reset button → Clears the board and all states
+
+    
+Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/maze-pathfinder.git
+cd maze-pathfinder
+```
+2. Install dependencies:
+
+```bash
+npm install
+```
+2. (Optional) Install Jest for running tests:
+
+```bash
+npm install --save-dev jest @types/jest ts-jest
+npm test
+```
+3. Run Locally:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
