@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 type CellType = 'free' | 'wall' | 'start' | 'goal';
@@ -13,11 +12,13 @@ export default function Grid() {
       Array.from({ length: GRID_SIZE }, () => 'free')
     )
   );   //initialize grid 20x20 grid with initially all cells set to free
-
   const [startPos, setStartPos] = useState<[number, number] | null>(null);
   const [goalPos, setGoalPos] = useState<[number, number] | null>(null);
   const [pathLength, setPathLength] = useState<number | null>(null);
   const [visitedCount, setVisitedCount] = useState<number | null>(null);
+  const [visited, setVisited] = useState<Set<string>>(new Set());
+  const [path, setPath] = useState<Set<string>>(new Set());
+  const visitedRef = React.useRef<Set<string>>(new Set());
 
   const handleClick = (row: number, col: number, event: React.MouseEvent) => {
     setGrid((prevGrid) => {
@@ -48,47 +49,123 @@ export default function Grid() {
     });
   };
 
-  const handleSolve = () => {
-    
-      if(!startPos || !goalPos){
-        alert('Please enter both start and goal points');
-        return;
-      }
+ const handleSolve = async () => {
+  //console.log('[Solve] grid size:', grid.length, grid[0]?.length);
+ // console.log('[Solve] start:', startPos, 'goal:', goalPos);
 
-     
-
-      // 🔧 Placeholder logic – to be replaced with actual pathfinding
-    setPathLength(42); // pretend result
-    setVisitedCount(87); // pretend result
+  if (!startPos || !goalPos) {
+    //console.error('❌ Cannot solve: start or goal not set');
+    alert('Please set both a start and goal point.');
+    return;
   }
+
+  // ✅ Reset all states AND the visitedRef
+  visitedRef.current = new Set();               // ✅ Clear visitedRef manually
+  setVisited(new Set());
+  setPath(new Set());
+  setPathLength(null);
+  setVisitedCount(null);
+
+  const response = await fetch('/api/solve', {
+    method: 'POST',
+    body: JSON.stringify({
+      grid,
+      start: startPos,
+      goal: goalPos,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  await response.json();
+};
+
+
+const resetBoard = () => {
+  setGrid(
+    Array.from({ length: GRID_SIZE }, () =>
+      Array.from({ length: GRID_SIZE }, () => 'free')
+    )
+  );
+  setStartPos(null);
+  setGoalPos(null);
+  setVisited(new Set());
+  setPath(new Set());
+  setPathLength(null);
+  setVisitedCount(null);
+  visitedRef.current = new Set();
+};
+
+
+
+
+  useEffect(() => {
+  const ws = new WebSocket('ws://localhost:3000/ws');
+
+  ws.onopen = () => {
+    console.log('WebSocket connected');
+  };
+
+  ws.onmessage = (event) => {
+    //console.log('[WS] Message received:', event.data);
+    const msg = JSON.parse(event.data);
+
+    if (msg.type === 'visited') {
+      const key = `${msg.row},${msg.col}`;
+      visitedRef.current.add(key);
+      setVisited(new Set(visitedRef.current)); // trigger re-render
+    }
+
+    if (msg.type === 'path') {
+      //console.log('[WS] Received path:', msg.path);
+      const newPath: Set<string> = new Set(
+        msg.path.map(([r, c]: [number, number]) => `${r},${c}`)
+      );
+      setPath(newPath);
+      setPathLength(newPath.size);
+      setVisitedCount(visitedRef.current.size);
+    }
+  };
+
+  return () => {
+    ws.close();
+  };
+}, []);
 
   return (
     <>
-    <div className="grid grid-cols-20 gap-[1px] bg-gray-300 max-w-fit">
+    <div className="grid grid-cols-20 gap-[2px] p-2 rounded-xl shadow-md bg-gradient-to-br from-gray-100 to-gray-200">
       {grid.map((row, rowIndex) =>
         row.map((cell, colIndex) => (
           <div
-            key={`${rowIndex}-${colIndex}`}
-            className={clsx(
-              'w-6 h-6 border border-gray-200',
-              {
-                'bg-white': cell === 'free',
-                'bg-black': cell === 'wall',
-                'bg-green-500': cell === 'start',
-                'bg-red-500': cell === 'goal',
-              }
-            )}
-            onClick={(e) => handleClick(rowIndex, colIndex, e)}
-          />
+          key={`${rowIndex}-${colIndex}`}
+          className={clsx(
+           'w-6 h-6 rounded-md shadow-sm transition-all duration-200 border border-gray-300 hover:scale-110',
+          {
+            'bg-green-500': cell === 'start',
+            'bg-red-500': cell === 'goal',
+            'bg-zinc-800': cell === 'wall',
+            'bg-blue-500': path.has(`${rowIndex},${colIndex}`),
+            'bg-yellow-300': visited.has(`${rowIndex},${colIndex}`) && !path.has(`${rowIndex},${colIndex}`),
+            'bg-white': cell === 'free' && !visited.has(`${rowIndex},${colIndex}`) && !path.has(`${rowIndex},${colIndex}`)
+          }
+        )}
+
+          onClick={(e) => handleClick(rowIndex, colIndex, e)}
+        />
         ))
       )
       }
     </div>
-    <div className='justify-center items-center py-4'>
-      <button onClick={handleSolve}>Solve</button>
-      <div className="text-sm py-2">
-          <div>📏 Path length: {pathLength ?? '--'}</div>
-          <div>🧠 Visited nodes: {visitedCount ?? '--'}</div>
+    <div className="flex items-center gap-4 py-4">
+      <button onClick={handleSolve} className="bg-black text-white px-4 py-1.5 rounded-lg hover:bg-zinc-800 shadow">Solve</button>
+       <button onClick={resetBoard} className="bg-white text-red-600 px-4 py-1.5 border border-red-600 rounded-lg hover:bg-red-100 shadow">
+    Reset
+  </button>
+      <div  className="text-sm ml-4 space-y-1 text-black">
+          <div> Path length: {pathLength ?? '--'}</div>
+          <div> Visited nodes: {visitedCount ?? '--'}</div>
         </div>
     </div>
     </>

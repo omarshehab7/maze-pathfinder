@@ -2,15 +2,18 @@
   "name": "maze-pathfinder",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "ts-node server.ts",
+    "dev": "node --loader ts-node/esm server.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest"
   },
   "dependencies": {
+    "@next/font": "^14.2.15",
     "next": "15.4.3",
+    "node-mocks-http": "^1.17.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ws": "^8.18.3"

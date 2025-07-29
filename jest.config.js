@@ -1,16 +1,10 @@
-const { createDefaultPreset } = require("ts-jest");
-
-const tsJestTransformCfg = createDefaultPreset().transform;
-
-/** @type {import("jest").Config} */
-module.exports = {
-  testEnvironment: "jsdom", // ✅ needed for DOM APIs in React
-  transform: {
-    ...tsJestTransformCfg,
-  },
+// jest.config.js
+export default {
+  preset: 'ts-jest/presets/default-esm',
+  testEnvironment: 'node',
+  transform: {},
+  extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
-    // ✅ resolve @/components/* aliases
-    "^@/(.*)$": "<rootDir>/src/$1",
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"], // ✅ for jest-dom
 };

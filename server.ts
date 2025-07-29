@@ -1,6 +1,6 @@
 import { createServer } from 'http';
 import next from 'next';
-import { initWebSocketServer } from './src/server/ws-server.js';
+import { initWebSocketServer } from './src/server/ws-server.ts';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -11,7 +11,7 @@ app.prepare().then(() => {
     handle(req, res);
   });
 
-  initWebSocketServer(server); // attach ws to the HTTP server
+  initWebSocketServer(server); 
 
   server.listen(3000, () => {
     console.log('> Ready on http://localhost:3000');
