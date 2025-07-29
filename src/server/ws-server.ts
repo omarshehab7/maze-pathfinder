@@ -16,7 +16,6 @@ export function initWebSocketServer(server: Server) {
   wss.on('connection', (ws) => {
   console.log('[WS] New connection');
   registerClient(ws);
-
   
 });
 

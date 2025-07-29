@@ -26,21 +26,21 @@ export default function Grid() {
       const newGrid = prevGrid.map((r) => [...r]); //clone each row of the existing grid
 
       if (event.shiftKey) {
-        // Set start
+        //Set start
         if (startPos) {
           newGrid[startPos[0]][startPos[1]] = 'free';
         }
         newGrid[row][col] = 'start';
         setStartPos([row, col]);
       } else if (event.ctrlKey || event.metaKey) {
-        // Set goal
+        //Set goal
         if (goalPos) {
           newGrid[goalPos[0]][goalPos[1]] = 'free';
         }
         newGrid[row][col] = 'goal';
         setGoalPos([row, col]);
       } else {
-        // Toggle wall
+        //Toggle wall
         const cell = newGrid[row][col];
         newGrid[row][col] = cell === 'wall' ? 'free' : 'wall';
       }
@@ -54,13 +54,13 @@ export default function Grid() {
  // console.log('[Solve] start:', startPos, 'goal:', goalPos);
 
   if (!startPos || !goalPos) {
-    //console.error('❌ Cannot solve: start or goal not set');
+    //console.error('Cannot solve: start or goal not set');
     alert('Please set both a start and goal point.');
     return;
   }
 
-  // ✅ Reset all states AND the visitedRef
-  visitedRef.current = new Set();               // ✅ Clear visitedRef manually
+  // Reset all states AND the visitedRef
+  visitedRef.current = new Set();            
   setVisited(new Set());
   setPath(new Set());
   setPathLength(null);

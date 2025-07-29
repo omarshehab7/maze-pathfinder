@@ -67,7 +67,7 @@ export async function runAStar(
       path.reverse();
 
       sendUpdate({ type: 'path', path });
-      //console.log('[A*] ✅ Path found:', path);
+      //console.log('[A*] Path found:', path);
       return;
     }
 
@@ -86,6 +86,6 @@ export async function runAStar(
     }
   }
 
-  //console.log('[A*] ❌ No path found');
+  //console.log('[A*] No path found');
   sendUpdate({ type: 'path', path: [] });
 }

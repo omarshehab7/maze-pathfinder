@@ -23,9 +23,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Maze Pathfinder",
   description: "Visualize A* pathfinding",
-  icons:{
-    icon: '/maze.ico'
-  }
 };
 
 export default function RootLayout({

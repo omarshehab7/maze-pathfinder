@@ -1,8 +1,6 @@
 // a-star.test.ts
 import { runAStar, heuristic,getNeighbors } from '@/lib/a-star';
 
-// Re-exported from same file or defined locally for testability
-
 type Coord = [number, number];
 
 describe('A* Helper Functions', () => {
