@@ -1,4 +1,5 @@
 Maze Pathfinder
+
 A modern maze pathfinding visualization tool built with Next.js, TypeScript, and WebSockets.
 Visualizes algorithms like A* in real-time, showing visited nodes and the shortest path between a start and goal cell.
 
