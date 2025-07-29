@@ -1,7 +1,6 @@
 import { registerClient, broadcastProgress } from '../../server/ws-broadcast';
 import { clients } from '../../server/ws-clients';
 
-// ✅ Fix: define WebSocket.OPEN
 (global as any).WebSocket = { OPEN: 1 };
 
 describe('WebSocket broadcast and registration', () => {

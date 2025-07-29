@@ -1,4 +1,4 @@
-import { POST } from '../../app/api/solve/route'; // adjust path to route.ts
+import { POST } from '../../app/api/solve/route'; 
 import type { NextRequest } from 'next/server';
 import { runAStar } from '@/lib/a-star.ts';
 import { broadcastProgress } from '@/server/ws-broadcast';
