@@ -54,7 +54,6 @@ export default function Grid() {
  // console.log('[Solve] start:', startPos, 'goal:', goalPos);
 
   if (!startPos || !goalPos) {
-    //console.error('Cannot solve: start or goal not set');
     alert('Please set both a start and goal point.');
     return;
   }

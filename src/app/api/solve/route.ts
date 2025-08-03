@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   // console.log('[A*] Start cell:', clonedGrid[start[0]][start[1]]);
   // console.log('[A*] Goal cell:', clonedGrid[goal[0]][goal[1]]);
 
-  // 🚫 Wall check
+  // Wall check
   if (
     clonedGrid[start[0]][start[1]] === 'wall' ||
     clonedGrid[goal[0]][goal[1]] === 'wall'

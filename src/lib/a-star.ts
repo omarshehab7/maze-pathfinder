@@ -36,7 +36,7 @@ export async function runAStar(
   gScore.set(key(start), 0);
   fScore.set(key(start), heuristic(start, goal));
 
-  while (openSet.size > 0) {
+  while (openSet.size > 0) { 
     // Pick node with lowest fScore
     let currentKey: string | null = null;
     let lowestF = Infinity;
@@ -49,11 +49,11 @@ export async function runAStar(
       }
     }
 
-    if (!currentKey) break;
+    if (!currentKey) break; //check current node
     const current = parse(currentKey);
 
     sendUpdate({ type: 'visited', row: current[0], col: current[1] });
-    await new Promise((res) => setTimeout(res, 10));
+    await new Promise((res) => setTimeout(res, 10)); //simulates delays between steps
 
     if (currentKey === key(goal)) {
       // Reconstruct path
